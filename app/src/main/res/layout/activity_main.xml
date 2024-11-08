@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/inputN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Fibonacci term (N)" />
+
+    <Button
+        android:id="@+id/btnFibonacci"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Compute Recursive Fibonacci" />
+
+    <TextView
+        android:id="@+id/FibResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Fibonacci time will be displayed here." />
+
+    <Button
+        android:id="@+id/btnIterativeFibonacci"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Compute Iterative Fibonacci" />
+
+    <TextView
+        android:id="@+id/IterFibResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Iterative Fibonacci time will be displayed here." />
+
+    <Button
+        android:id="@+id/btnBigIntegerFibonacci"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Compute BigInteger Fibonacci" />
+
+    <TextView
+        android:id="@+id/BigIntegerFibResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="BigInteger Fibonacci time will be displayed here." />
+
+    <TextView
+        android:id="@+id/BigIntegerAllocations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Number of BigInteger allocations will be displayed here." />
+
+    <Button
+        android:id="@+id/btnCachedFibonacci"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Compute Cache Fibonacci" />
+
+    <TextView
+        android:id="@+id/CachedFibResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Cached Fibonacci time will be displayed here." />
+
+</LinearLayout>
