@@ -12,36 +12,49 @@
         android:hint="Enter Fibonacci term (N)" />
 
     <Button
-        android:id="@+id/btnFibonacci"
-        android:layout_width="250dp"
+        android:id="@+id/btnRecursiveWithLoop"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Compute Recursive Fibonacci" />
+        android:text="Compute Recursively with Loop" />
 
     <TextView
-        android:id="@+id/FibResult"
+        android:id="@+id/RecursiveWithLoopResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="Fibonacci time will be displayed here." />
 
     <Button
-        android:id="@+id/btnIterativeFibonacci"
-        android:layout_width="250dp"
+        android:id="@+id/btnIterative"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Compute Iterative Fibonacci" />
+        android:text="Compute Iteratively" />
 
     <TextView
-        android:id="@+id/IterFibResult"
+        android:id="@+id/IterativeFibResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="Iterative Fibonacci time will be displayed here." />
 
     <Button
-        android:id="@+id/btnBigIntegerFibonacci"
-        android:layout_width="250dp"
+        android:id="@+id/btnIterativeUsingBigInteger"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Compute BigInteger Fibonacci" />
+        android:text="Compute Iteratively using BigInteger" />
+
+    <TextView
+        android:id="@+id/IterativeUsingBigIntegerFibResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Iterative Using BigInteger Fibonacci time will be displayed here." />
+
+    <Button
+        android:id="@+id/btnBigIntegerFibonacci"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Compute BigInteger" />
 
     <TextView
         android:id="@+id/BigIntegerFibResult"
@@ -58,10 +71,36 @@
         android:text="Number of BigInteger allocations will be displayed here." />
 
     <Button
-        android:id="@+id/btnCachedFibonacci"
-        android:layout_width="250dp"
+        android:id="@+id/btnRecursiveUsingBigIntegerAndPrimitiveFibonacci"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Compute Cache Fibonacci" />
+        android:text="Compute Recursively Using BigInteger And Primitive" />
+
+    <TextView
+        android:id="@+id/RecursiveUsingBigIntegerAndPrimitiveFibResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Recursive Using BigInteger And Primitive Fibonacci time will be displayed here." />
+
+    <Button
+        android:id="@+id/btnRecursiveUsingBigIntegerAndTableFibonacci"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="compute Recursively Using BigInteger And Table" />
+
+    <TextView
+        android:id="@+id/RecursiveUsingBigIntegerAndTableFibResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Recursive Using BigInteger And Table Fibonacci time will be displayed here." />
+
+    <Button
+        android:id="@+id/btnCachedFibonacci"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Compute Cache" />
 
     <TextView
         android:id="@+id/CachedFibResult"

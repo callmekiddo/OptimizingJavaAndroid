@@ -1,135 +1,183 @@
 package com.example.toiuu;
 
-import androidx.appcompat.app.AppCompatActivity;
-import android.database.DatabaseUtils;
+import android.annotation.SuppressLint;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity2 extends AppCompatActivity {
-
     private SQLiteDatabase db;
-    private TextView resultsTextView;
-    private final int NUM_RECORDS = 1000;
+    private TextView resultView;
+    private int rowCount = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_2);
 
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-        db = dbHelper.getWritableDatabase();
+        SQLiteOpenHelper helper = new SQLiteOpenHelper(this, "optimization.db", null, 2) {  // Increment to 2
+            @Override
+            public void onCreate(SQLiteDatabase db) {
+                db.execSQL("CREATE TABLE IF NOT EXISTS TestData (id INTEGER PRIMARY KEY, value TEXT)");
+            }
 
-        resultsTextView = findViewById(R.id.results);
+            @Override
+            public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+                db.execSQL("DROP TABLE IF EXISTS TestData");
+                onCreate(db);
+            }
+        };
+        db = helper.getWritableDatabase();
 
-        Button runAllButton = findViewById(R.id.runAllInsert);
-        runAllButton.setOnClickListener(v -> runAllInsert());
+        Button btnWithoutTransaction = findViewById(R.id.btnWithoutTransaction);
+        Button btnWithTransaction = findViewById(R.id.btnWithTransaction);
+        Button btnWithCompiledStatement = findViewById(R.id.btnWithCompiledStatement);
+        Button btnBatchInsertWithCompiledStatement = findViewById(R.id.btnBatchInsertWithCompiledStatement);
+        Button btnFetchAllColumns = findViewById(R.id.btnFetchAllColumns);
+        Button btnFetchSpecificColumn = findViewById(R.id.btnFetchSpecificColumn);
+
+        TextView resultWithoutTransaction = findViewById(R.id.resultWithoutTransaction);
+        TextView resultWithTransaction = findViewById(R.id.resultWithTransaction);
+        TextView resultWithCompiledStatement = findViewById(R.id.resultWithCompiledStatement);
+        TextView resultBatchInsertWithCompiledStatement = findViewById(R.id.resultBatchInsertWithCompiledStatement);
+        TextView resultFetchAllColumns = findViewById(R.id.resultFetchAllColumns);
+        TextView resultFetchSpecificColumn = findViewById(R.id.resultFetchSpecificColumn);
+
+        btnWithoutTransaction.setOnClickListener(v -> {
+            long time = insertWithoutTransaction(rowCount);
+            resultWithoutTransaction.setText("Insert without transaction: " + time + " ms");
+        });
+
+        btnWithTransaction.setOnClickListener(v -> {
+            long time = insertWithTransaction(rowCount);
+            resultWithTransaction.setText("Insert with transaction: " + time + " ms");
+        });
+
+        btnWithCompiledStatement.setOnClickListener(v -> {
+            long time = insertWithCompiledStatement(rowCount);
+            resultWithCompiledStatement.setText("Insert with compiled statement: " + time + " ms");
+        });
+
+        btnBatchInsertWithCompiledStatement.setOnClickListener(v -> {
+            long time = batchInsertWithCompiledStatement(rowCount);
+            resultBatchInsertWithCompiledStatement.setText("Batch insert with transaction and compiled statement: " + time + " ms");
+        });
+
+        btnFetchAllColumns.setOnClickListener(v -> {
+            long time = fetchAllColumns();
+            resultFetchAllColumns.setText("Fetch all columns: " + time + " ms");
+        });
+
+        btnFetchSpecificColumn.setOnClickListener(v -> {
+            long time = fetchSpecificColumn();
+            resultFetchSpecificColumn.setText("Fetch specific column (id only): " + time + " ms");
+        });
     }
 
-    // Function to run all insertion tests and display results
-    private void runAllInsert() {
-        StringBuilder results = new StringBuilder();
-
-        results.append("No Optimization: ")
-                .append(testInsertionWithoutOptimization())
-                .append(" ms\n");
-
-        results.append("Optimized with Compiled Statement: ")
-                .append(testInsertionWithCompiledStatement())
-                .append(" ms\n");
-
-        results.append("Optimized with Transaction: ")
-                .append(testInsertionWithTransaction())
-                .append(" ms\n");
-
-        results.append("Optimized with InsertHelper: ")
-                .append(testInsertionWithInsertHelper())
-                .append(" ms\n");
-
-        resultsTextView.setText(results.toString());
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (db != null && db.isOpen()) {
+            db.close();
+        }
     }
 
-    // 1. Without optimization
-    private long testInsertionWithoutOptimization() {
+    private void displayResult(String result) {
+        String currentText = resultView.getText().toString();
+        resultView.setText(currentText + "\n" + result);
+    }
+
+    private long insertWithoutTransaction(int count) {
         long startTime = System.currentTimeMillis();
-        for (int i = 0; i < NUM_RECORDS; i++) {
-            db.execSQL("INSERT INTO TestTable (name, age) VALUES ('Name " + i + "', " + (i % 100) + ")");
+        try {
+            for (int i = 0; i < count; i++) {
+                db.execSQL("INSERT INTO TestData (value) VALUES ('Sample')");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return System.currentTimeMillis() - startTime;
     }
 
-    // 2. Using Compiled Statement
-    private long testInsertionWithCompiledStatement() {
-        long startTime = System.currentTimeMillis();
-        SQLiteStatement statement = db.compileStatement("INSERT INTO TestTable (name, age) VALUES (?, ?)");
-        for (int i = 0; i < NUM_RECORDS; i++) {
-            statement.bindString(1, "Name " + i);
-            statement.bindLong(2, i % 100);
-            statement.executeInsert();
-        }
-        return System.currentTimeMillis() - startTime;
-    }
-
-    // 3. Using Transactions
-    private long testInsertionWithTransaction() {
+    private long insertWithTransaction(int count) {
         long startTime = System.currentTimeMillis();
         db.beginTransaction();
         try {
-            for (int i = 0; i < NUM_RECORDS; i++) {
-                db.execSQL("INSERT INTO TestTable (name, age) VALUES ('Name " + i + "', " + (i % 100) + ")");
+            for (int i = 0; i < count; i++) {
+                db.execSQL("INSERT INTO TestData (value) VALUES ('Sample')");
             }
             db.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             db.endTransaction();
         }
         return System.currentTimeMillis() - startTime;
     }
 
-    // 4. Using DatabaseUtils.InsertHelper (deprecated but illustrative)
-    private long testInsertionWithInsertHelper() {
+    private long insertWithCompiledStatement(int count) {
+        String sql = "INSERT INTO TestData (value) VALUES (?)";
+        SQLiteStatement statement = db.compileStatement(sql);
         long startTime = System.currentTimeMillis();
-        DatabaseUtils.InsertHelper insertHelper = new DatabaseUtils.InsertHelper(db, "TestTable");
-        final int nameColumn = insertHelper.getColumnIndex("name");
-        final int ageColumn = insertHelper.getColumnIndex("age");
-
-        db.beginTransaction();
         try {
-            for (int i = 0; i < NUM_RECORDS; i++) {
-                insertHelper.prepareForInsert();
-                insertHelper.bind(nameColumn, "Name " + i);
-                insertHelper.bind(ageColumn, i % 100);
-                insertHelper.execute();
+            for (int i = 0; i < count; i++) {
+                statement.bindString(1, "Sample");
+                statement.executeInsert();
             }
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-            insertHelper.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return System.currentTimeMillis() - startTime;
     }
 
-    // Helper class to manage the database
-    private static class DatabaseHelper extends SQLiteOpenHelper {
-
-        private static final String DATABASE_NAME = "optimization.db";
-        private static final int DATABASE_VERSION = 1;
-
-        DatabaseHelper(MainActivity2 context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    private long batchInsertWithCompiledStatement(int count) {
+        String sql = "INSERT INTO TestData (value) VALUES (?)";
+        SQLiteStatement statement = db.compileStatement(sql);
+        long startTime = System.currentTimeMillis();
+        db.beginTransaction();
+        try {
+            for (int i = 0; i < count; i++) {
+                statement.bindString(1, "Sample");
+                statement.executeInsert();
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.endTransaction();
         }
+        return System.currentTimeMillis() - startTime;
+    }
 
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL("CREATE TABLE IF NOT EXISTS TestTable (id INTEGER PRIMARY KEY, name TEXT, age INTEGER)");
+    private long fetchAllColumns() {
+        long startTime = System.currentTimeMillis();
+        Cursor cursor = db.rawQuery("SELECT * FROM TestData", null);
+        try {
+            while (cursor.moveToNext()) {
+                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
+                @SuppressLint("Range") String value = cursor.getString(cursor.getColumnIndex("value"));
+            }
+        } finally {
+            cursor.close();
         }
+        return System.currentTimeMillis() - startTime;
+    }
 
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS TestTable");
-            onCreate(db);
+    private long fetchSpecificColumn() {
+        long startTime = System.currentTimeMillis();
+        Cursor cursor = db.rawQuery("SELECT id FROM TestData", null);
+        try {
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(0);
+            }
+        } finally {
+            cursor.close();
         }
+        return System.currentTimeMillis() - startTime;
     }
 }

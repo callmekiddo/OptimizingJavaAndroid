@@ -6,16 +6,86 @@
     android:padding="16dp">
 
     <Button
-        android:id="@+id/runAllInsert"
+        android:id="@+id/btnWithoutTransaction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Run all insert" />
-
+        android:text="Insert Without Transaction" />
     <TextView
-        android:id="@+id/results"
+        android:id="@+id/resultWithoutTransaction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Results will displayed here."
-        android:paddingTop="16dp" />
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:padding="8dp"
+        android:text="Insert Without Transaction time will be displayed here."/>
 
+    <Button
+        android:id="@+id/btnWithTransaction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Insert With Transaction" />
+    <TextView
+        android:id="@+id/resultWithTransaction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:padding="8dp"
+        android:text="Insert With Transaction time will be displayed here."/>
+
+    <Button
+        android:id="@+id/btnWithCompiledStatement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Insert With Compiled Statement" />
+    <TextView
+        android:id="@+id/resultWithCompiledStatement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:padding="8dp"
+        android:text="Insert With Compiled Statement time will be displayed here."/>
+
+    <Button
+        android:id="@+id/btnBatchInsertWithCompiledStatement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Batch Insert with Transaction and Compiled Statement" />
+    <TextView
+        android:id="@+id/resultBatchInsertWithCompiledStatement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:padding="8dp"
+        android:text="Batch Insert with Transaction and Compiled Statement time will be displayed here."/>
+
+    <Button
+        android:id="@+id/btnFetchAllColumns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fetch All Columns" />
+    <TextView
+        android:id="@+id/resultFetchAllColumns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:padding="8dp"
+        android:text="Fetch All Columns time will be displayed here."/>
+
+    <Button
+        android:id="@+id/btnFetchSpecificColumn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fetch Specific Column (ID Only)" />
+    <TextView
+        android:id="@+id/resultFetchSpecificColumn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:padding="8dp"
+        android:text="Fetch Specific Column (ID Only) time will be displayed here."/>
 </LinearLayout>
