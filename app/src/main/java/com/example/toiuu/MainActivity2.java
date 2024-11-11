@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,16 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_2);
+        try {
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                            .detectLeakedSqlLiteObjects()
+                            .detectLeakedClosableObjects() // API level 11
+                            .setClassInstanceLimit(Class.forName("com.apress.proandroid.SomeClass"), 100) // API level 11
+                            .penaltyLog()
+                            .build());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         SQLiteOpenHelper helper = new SQLiteOpenHelper(this, "optimization.db", null, 2) {  // Increment to 2
             @Override
