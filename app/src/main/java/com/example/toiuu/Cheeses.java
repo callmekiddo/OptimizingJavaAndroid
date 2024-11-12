@@ -1,6 +1,5 @@
 package com.example.toiuu;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -126,8 +125,6 @@ public class Cheeses {
         Cursor c = db.query("cheese", null, null, null, null, null, null);
         if (c.moveToFirst()) {
             do {
-                @SuppressLint("Range") String name = c.getString(c.getColumnIndex("name"));
-                @SuppressLint("Range") String origin = c.getString(c.getColumnIndex("origin"));
             } while (c.moveToNext());
         }
         c.close();
@@ -139,7 +136,6 @@ public class Cheeses {
         Cursor c = db.query("cheese", new String[]{"name"}, null, null, null, null, null);
         if (c.moveToFirst()) {
             do {
-                @SuppressLint("Range") String name = c.getString(c.getColumnIndex("name"));
             } while (c.moveToNext());
         }
         c.close();
