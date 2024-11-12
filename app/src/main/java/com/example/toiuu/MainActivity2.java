@@ -16,15 +16,12 @@ public class MainActivity2 extends AppCompatActivity {
 
         cheeses = new Cheeses(5000);
 
-        // Setup buttons for insertion methods
         setupButton(R.id.btnStringPlus, R.id.tvStringPlusTime, () -> cheeses.populateWithStringPlus());
         setupButton(R.id.btnStringFormat, R.id.tvStringFormatTime, () -> cheeses.populateWithStringFormat());
         setupButton(R.id.btnStringBuilder, R.id.tvStringBuilderTime, () -> cheeses.populateWithStringBuilder());
         setupButton(R.id.btnCompileStatement, R.id.tvCompileStatementTime, () -> cheeses.populateWithCompileStatement());
         setupButton(R.id.btnContentValues, R.id.tvContentValuesTime, () -> cheeses.populateWithContentValues());
         setupButton(R.id.btnCompileStatementOneTransaction, R.id.tvCompileStatementOneTransactionTime, () -> cheeses.populateWithCompileStatementOneTransaction());
-
-        // Setup buttons for iteration methods
         setupButton(R.id.btnIterateBothColumns, R.id.tvIterateBothColumnsTime, () -> cheeses.iterateBothColumns());
         setupButton(R.id.btnIterateFirstColumn, R.id.tvIterateFirstColumnTime, () -> cheeses.iterateFirstColumn());
     }
